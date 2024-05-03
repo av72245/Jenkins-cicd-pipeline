@@ -1,11 +1,14 @@
 pipeline {
     agent any
+    environment {
+        MAVEN_HOME = '/path/to/maven'
+        PATH = "${env.PATH}:${env.MAVEN_HOME}/bin"
+    }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    // Tool: Maven
                     sh 'mvn clean install'
                 }
             }
@@ -13,7 +16,6 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 script {
-                    // Tool: JUnit for unit testing, Mockito for integration
                     sh 'mvn test'
                 }
             }
@@ -21,7 +23,6 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    // Tool: SonarQube
                     sh 'mvn sonar:sonar'
                 }
             }
@@ -29,7 +30,6 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    // Tool: OWASP Dependency Check
                     sh 'mvn dependency-check:check'
                 }
             }
@@ -37,7 +37,6 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    // Deployment to AWS EC2 via scripts or AWS CLI
                     sh './deploy-staging.sh'
                 }
             }
@@ -45,7 +44,6 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    // Tool: Selenium for web apps
                     sh 'selenium-tests.sh'
                 }
             }
@@ -53,18 +51,16 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script {
-                    // Deployment to AWS EC2 via scripts or AWS CLI
                     sh './deploy-production.sh'
                 }
             }
         }
     }
     post {
-    always {
-        mail to: 'your.email@example.com',
-             subject: "Jenkins Pipeline Stage ${currentBuild.currentResult}",
-             body: "A stage in the Jenkins Pipeline has completed. Check the logs for details."
+        always {
+            mail to: 'your.email@example.com',
+                 subject: "Jenkins Pipeline Stage ${currentBuild.currentResult}",
+                 body: "A stage in the Jenkins Pipeline has completed. Check the logs for details."
+        }
     }
-}
-
 }
