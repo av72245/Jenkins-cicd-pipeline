@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         // Ensure this name matches the Maven configuration in your Jenkins Global Tool Configuration
-        maven 'Homebrew Maven'
+        maven 'default maven'
     }
     environment {
         // Make sure Maven's bin directory is in the PATH
