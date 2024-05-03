@@ -60,11 +60,11 @@ pipeline {
         }
     }
     post {
-        always {
-            mail to: 'your.email@example.com',
-                 subject: "Jenkins Pipeline Stage ${currentBuild.currentResult}",
-                 body: "A stage in the Jenkins Pipeline has completed. Check the logs for details.",
-                 attachLog: true
-        }
+    always {
+        mail to: 'your.email@example.com',
+             subject: "Jenkins Pipeline Stage ${currentBuild.currentResult}",
+             body: "A stage in the Jenkins Pipeline has completed. Check the logs for details."
     }
+}
+
 }
