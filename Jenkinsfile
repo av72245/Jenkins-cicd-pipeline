@@ -52,14 +52,24 @@ pipeline {
         }
     }
     post {
-        always {
-            echo 'This is a post-build step that always runs.'
-        }
-        success {
-            echo 'Build was successful!'
-        }
-        failure {
-            echo 'Build failed. Check the logs for details.'
-        }
+    always {
+        echo 'This is a post-build step that always runs.'
+        mail to: 'your.email@example.com',
+             subject: "Build ${env.BUILD_NUMBER} Status",
+             body: "The build of ${env.JOB_NAME} ${env.BUILD_NUMBER} has completed. Check Jenkins for more details."
     }
+    success {
+        echo 'Build was successful!'
+        mail to: 'your.email@example.com',
+             subject: "Build ${env.BUILD_NUMBER} Successful",
+             body: "Great news! The build was successful. Check Jenkins for more details."
+    }
+    failure {
+        echo 'Build failed. Check the logs for details.'
+        mail to: 'your.email@example.com',
+             subject: "Build ${env.BUILD_NUMBER} Failed",
+             body: "Alert: The build failed. Check Jenkins for more details."
+    }
+}
+
 }
