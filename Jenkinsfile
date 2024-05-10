@@ -45,27 +45,34 @@ pipeline {
         }
     }
     post {
-    always {
-        echo 'This is a post-build step that always runs.'
-        mail to: 'av72245@gmail.com',
-             subject: "Build ${env.BUILD_NUMBER} Status",
-             body: "The build of ${env.JOB_NAME} ${env.BUILD_NUMBER} has completed. Check Jenkins for more details."
-             attachmentsPattern: '**/logs/*.log'
-    }
-    success {
-        echo 'Build was successful!'
-        mail to: 'av72245@gmail.com',
-             subject: "Build ${env.BUILD_NUMBER} Successful",
-             body: "Great news! The build was successful. Check Jenkins for more details."
-             attachmentsPattern: '**/logs/*.log'
-    }
-    failure {
-        echo 'Build failed. Check the logs for details.'
-        mail to: 'av72245@gmail.com',
-             subject: "Build ${env.BUILD_NUMBER} Failed",
-             body: "Alert: The build failed. Check Jenkins for more details."
-             attachmentsPattern: '**/logs/*.log'
-    }
+        always {
+            emailext(
+                subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' - ${currentBuild.currentResult}",
+                body: "Please see the attached log for more details.",
+                to: 'example@email.com',
+                attachmentsPattern: '**/logs/*.log'
+            )
+        }
+    
+   success {
+    echo 'Build was successful!'
+    emailext(
+        to: 'av72245@gmail.com',
+        subject: "Build ${env.BUILD_NUMBER} Successful",
+        body: "Great news! The build was successful. Check Jenkins for more details.",
+        attachmentsPattern: '**/logs/*.log'
+    )
+}
+failure {
+    echo 'Build failed. Check the logs for details.'
+    emailext(
+        to: 'av72245@gmail.com',
+        subject: "Build ${env.BUILD_NUMBER} Failed",
+        body: "Alert: The build failed. Check Jenkins for more details.",
+        attachmentsPattern: '**/logs/*.log'
+    )
+}
+
 }
 
 }
