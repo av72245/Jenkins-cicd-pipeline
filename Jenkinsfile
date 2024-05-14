@@ -50,7 +50,7 @@ pipeline {
                 subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' - ${currentBuild.currentResult}",
                 body: "Please see the attached log for more details.",
                 to: 'av72245@gmail.com',
-                attachmentsPattern: '**/logs/*.log'
+                attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
             )
         }
     
@@ -60,7 +60,7 @@ pipeline {
         to: 'av72245@gmail.com',
         subject: "Build ${env.BUILD_NUMBER} Successful",
         body: "Great news! The build was successful. Check Jenkins for more details.",
-        attachmentsPattern: '**/logs/*.log'
+        attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
     )
 }
 failure {
@@ -69,7 +69,7 @@ failure {
         to: 'av72245@gmail.com',
         subject: "Build ${env.BUILD_NUMBER} Failed",
         body: "Alert: The build failed. Check Jenkins for more details.",
-        attachmentsPattern: '**/logs/*.log'
+        attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
     )
 }
 
