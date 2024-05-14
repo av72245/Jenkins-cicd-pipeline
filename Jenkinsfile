@@ -49,7 +49,7 @@ pipeline {
             emailext(
                 subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' - ${currentBuild.currentResult}",
                 body: "Please see the attached log for more details.",
-                to: 'example@email.com',
+                to: 'av72245@gmail.com',
                 attachmentsPattern: '**/logs/*.log'
             )
         }
