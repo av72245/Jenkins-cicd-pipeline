@@ -3,76 +3,83 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building the project with Maven.'
-                echo 'Tool used: Maven'
+                println "Task: Compile and package the code"
+                println "Suggested Tool: Maven"
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests using JUnit.'
-                echo 'Tools used: JUnit'
+                println "Task: Run unit tests to ensure the code functions as expected"
+                println "Suggested Tool: JUnit"
+                println "Task: Run integration tests to ensure the different components work together"
+                println "Suggested Tool: Selenium"
+            }
+            post {
+                success {
+                    emailext(
+                        subject: "Unit and Integration Tests Passed",
+                        body: "Unit and Integration Tests stage completed successfully.",
+                        attachLog: true,
+                        to: "av72245@gmail.com"
+                    )
+                }
+                failure {
+                    emailext(
+                        subject: "Unit and Integration Tests Failed",
+                        body: "Unit and Integration Tests stage failed.",
+                        attachLog: true,
+                        to: "av72245@gmail.com"
+                    )
+                }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo 'Analyzing code quality with SonarQube.'
-                echo 'Tool used: SonarQube'
+                println "Task: Analyze the code and ensure it meets industry standards"
+                println "Suggested Tool: SonarQube"
             }
         }
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan with OWASP ZAP.'
-                echo 'Tool used: OWASP ZAP'
+                println "Task: Identify any vulnerabilities in the code"
+                println "Suggested Tool: OWASP ZAP"
+            }
+            post {
+                success {
+                    emailext(
+                        subject: "Security Scan Passed",
+                        body: "Security Scan stage completed successfully.",
+                        attachLog: true,
+                        to: "av72245@gmail.com"
+                    )
+                }
+                failure {
+                    emailext(
+                        subject: "Security Scan Failed",
+                        body: "Security Scan stage failed.",
+                        attachLog: true,
+                        to: "av72245@gmail.com"
+                    )
+                }
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to AWS EC2 staging environment.'
-                echo 'Deployment tool: AWS CLI or Jenkins EC2 plugin'
+                println "Task: Deploy the application to a staging server (e.g., AWS EC2 instance)"
+                println "Suggested Tool: AWS CodeDeploy"
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on the staging environment.'
-                echo 'Tools used: Selenium or similar'
+                println "Task: Run integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
+                println "Suggested Tool: Cucumber"
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production environment.'
-                echo 'This should be done with caution and potentially additional approval steps.'
+                println "Task: Deploy the application to a production server (e.g., AWS EC2 instance)"
+                println "Suggested Tool: Ansible"
             }
         }
     }
-    post {
-        always {
-            emailext(
-                subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' - ${currentBuild.currentResult}",
-                body: "Please see the attached log for more details.",
-                to: 'av72245@gmail.com',
-                attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
-            )
-        }
-    
-   success {
-    echo 'Build was successful!'
-    emailext(
-        to: 'av72245@gmail.com',
-        subject: "Build ${env.BUILD_NUMBER} Successful",
-        body: "Great news! The build was successful. Check Jenkins for more details.",
-        attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
-    )
-}
-failure {
-    echo 'Build failed. Check the logs for details.'
-    emailext(
-        to: 'av72245@gmail.com',
-        subject: "Build ${env.BUILD_NUMBER} Failed",
-        body: "Alert: The build failed. Check Jenkins for more details.",
-        attachmentsPattern: '/Users/akashverma/.jenkins/jobs/Github cicd pipeline/builds/32/*.log'
-    )
-}
-
-}
-
 }
